@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .url-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .url-form label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .url-form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .url-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .url-form button:hover {
+            background-color: #0056b3;
+        }
+        .url-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .url-table th, .url-table td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+        <% if (locals.id) { %>
+            <p>URL Generated: <a href="http://localhost:8000/<%= id %>" target="_blank">http://localhost:8000/<%= id %></a></p>
+        <% } %>
+        <div class="url-form">
+            <form action="/url" method="POST">
+                <label for="urlInput">Enter Your URL:</label><br>
+                <input type="text" id="urlInput" name="url" placeholder="https://example.com" required>
+                <button type="submit">Generate Short URL</button>
+            </form>
+        </div>
+        <div>
+            <% if (locals.urls) { %>
+                <table class="url-table">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Short Id</th>
+                            <th>Redirect URL</th>
+                            <th>Clicks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% urls.forEach((url,index) => { %>
+                            <tr>
+                                <td><%= index+1  %></td>
+                                <td><%= url.shortId %></td>
+                                <td><a href="<%= url.redirectURL %>" target="_blank"><%= url.redirectURL %></a></td>
+                                <td><%= url.visitLogs.length  %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
